@@ -4,6 +4,8 @@ export const useRecipeStore = create((set, get) => ({
   recipes: [], // Initial list of recipes
   searchTerm: '', // Current search term
   filteredRecipes: [], // Filtered list of recipes
+  favorites: [],
+  recommendations:[],
 
   // Action to update the search term
   setSearchTerm: (term) => {
@@ -35,6 +37,19 @@ export const useRecipeStore = create((set, get) => ({
     const { recipes } = get();
     const filtered = recipes.filter((recipe) => recipe.prepTime <= maxTime);
     set({ filteredRecipes: filtered });
+  },
+  toggleFavorite: (recipeId) =>
+    set((state) => {
+      if (state.favorites.includes(recipeId)) {
+        return { favorites: state.favorites.filter(id => id !== recipeId) };
+      } else {
+        return { favorites: [...state.favorites, recipeId] };
+      }
+    }),
+
+  // Get favorite recipes
+  getFavorites: (state) => {
+    return state.recipes.filter(recipe => state.favorites.includes(recipe.id));
   },
 }));
 

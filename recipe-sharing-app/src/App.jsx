@@ -5,6 +5,7 @@ import RecipeList from './components/RecipeList';
 import AddRecipeForm from './components/AddRecipeForm';
 import RecipeDetails from './components/RecipeDetails';
 import { useRecipeStore } from './components/recipeStore';
+import SearchBar from './components/SearchBar';
 
 function App() {
   const setRecipes = useRecipeStore(state => state.setRecipes);
@@ -44,6 +45,7 @@ function App() {
             } />
             <Route path="/recipe/:recipeId" element={<RecipeDetails />} />
           </Routes>
+          
         </main>
         
         <footer>

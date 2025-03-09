@@ -6,6 +6,7 @@ import AddRecipeForm from './components/AddRecipeForm';
 import RecipeDetails from './components/RecipeDetails';
 import { useRecipeStore } from './components/recipeStore';
 import SearchBar from './components/SearchBar';
+import FavoriteList from './components/FavoritesList';
 
 function App() {
   const setRecipes = useRecipeStore(state => state.setRecipes);
@@ -33,6 +34,8 @@ function App() {
       <div className="app-container">
         <header>
           <h1>Recipe Sharing App</h1>
+          <FavoriteList/>
+          <SearchBar/>
         </header>
         
         <main>
@@ -45,7 +48,7 @@ function App() {
             } />
             <Route path="/recipe/:recipeId" element={<RecipeDetails />} />
           </Routes>
-          
+
         </main>
         
         <footer>

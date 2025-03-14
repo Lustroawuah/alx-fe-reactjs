@@ -1,168 +1,95 @@
-// src/components/RegistrationForm.jsx
-import { useState } from 'react';
+import React, { useState } from "react";
+
 
 const RegistrationForm = () => {
   // State for form fields
   const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: ''
+    username: "",
+    email: "",
+    password: "",
   });
-  
-  // State for form validation errors
+
+  // State for validation errors
   const [errors, setErrors] = useState({});
-  
-  // State for submission status
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
-  const [submitError, setSubmitError] = useState(null);
 
   // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
-    
-    // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors({
-        ...errors,
-        [name]: ''
-      });
-    }
   };
 
   // Validate form fields
   const validateForm = () => {
     const newErrors = {};
-    
-    // Validate username
-    if (!formData.username.trim()) {
-      newErrors.username = 'Username is required';
-    }
-    
-    // Validate email
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email)) {
-      newErrors.email = 'Invalid email address';
-    }
-    
-    // Validate password
-    if (!formData.password) {
-      newErrors.password = 'Password is required';
-    } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
-    }
-    
-    return newErrors;
+    if (!formData.username) newErrors.username = "Username is required";
+    if (!formData.email) newErrors.email = "Email is required";
+    if (!formData.password) newErrors.password = "Password is required";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; // Return true if no errors
   };
 
   // Handle form submission
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    
-    // Validate form
-    const formErrors = validateForm();
-    
-    if (Object.keys(formErrors).length > 0) {
-      setErrors(formErrors);
-      return;
-    }
-    
-    // Simulate API call
-    setIsSubmitting(true);
-    setSubmitError(null);
-    
-    try {
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Mock successful registration
-      console.log('Registration successful:', formData);
-      setSubmitSuccess(true);
-      
-      // Reset form after successful submission
-      setFormData({
-        username: '',
-        email: '',
-        password: ''
-      });
-    } catch (error) {
-      console.error('Registration failed:', error);
-      setSubmitError('Registration failed. Please try again.');
-    } finally {
-      setIsSubmitting(false);
+    if (validateForm()) {
+      console.log("Form submitted:", formData);
+      // Simulate API call
+      fetch("https://jsonplaceholder.typicode.com/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Success:", data);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    } else {
+      console.log("Form has errors");
     }
   };
 
   return (
-    <div className="form-container">
-      <h2>Register with Controlled Components</h2>
-      
-      {submitSuccess && (
-        <div className="success-message">
-          Registration successful! Thank you for registering.
-        </div>
-      )}
-      
-      {submitError && (
-        <div className="error-message">
-          {submitError}
-        </div>
-      )}
-      
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-            className={errors.username ? 'input-error' : ''}
-          />
-          {errors.username && <span className="error">{errors.username}</span>}
-        </div>
-        
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className={errors.email ? 'input-error' : ''}
-          />
-          {errors.email && <span className="error">{errors.email}</span>}
-        </div>
-        
-        <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            className={errors.password ? 'input-error' : ''}
-          />
-          {errors.password && <span className="error">{errors.password}</span>}
-        </div>
-        
-        <button 
-          type="submit" 
-          disabled={isSubmitting}
-          className="submit-button"
-        >
-          {isSubmitting ? 'Registering...' : 'Register'}
-        </button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label>Username:</label>
+        <input
+          type="text"
+          name="username"
+          value={formData.username} // Controlled value
+          onChange={handleChange}
+        />
+        {errors.username && <div className="error">{errors.username}</div>}
+      </div>
+      <div>
+        <label>Email:</label>
+        <input
+          type="email"
+          name="email"
+          value={formData.email} // Controlled value
+          onChange={handleChange}
+        />
+        {errors.email && <div className="error">{errors.email}</div>}
+      </div>
+      <div>
+        <label>Password:</label>
+        <input
+          type="password"
+          name="password"
+          value={formData.password} // Controlled value
+          onChange={handleChange}
+        />
+        {errors.password && <div className="error">{errors.password}</div>}
+      </div>
+      <button type="submit">Register</button>
+    </form>
   );
 };
 

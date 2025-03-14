@@ -1,6 +1,8 @@
 // src/App.jsx
 import { useState } from 'react';
-import FormikForm from './components/FormikForm';
+import FormikForm from './components/formikForm';
+import RegistrationForm from './components/RegistrationForm'; // Add this line
+import './App.css';
 import './App.css';
 
 function App() {

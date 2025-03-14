@@ -1,7 +1,7 @@
 // src/App.jsx
 import { useState } from 'react';
 import RegistrationForm from './components/RegistrationForm';
-import FormikForm from './components/formikForm';
+import FormikForm from './components/FormikForm';
 import './App.css';
 
 function App() {

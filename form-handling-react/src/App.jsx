@@ -3,7 +3,7 @@ import { useState } from 'react';
 import FormikForm from './components/formikForm';
 import RegistrationForm from './components/RegistrationForm'; // Add this line
 import './App.css';
-import './App.css';
+
 
 function App() {
   const [activeForm, setActiveForm] = useState('controlled');
@@ -29,7 +29,7 @@ function App() {
       </header>
       
       <main>
-        {activeForm === 'controlled' ? <RegistrationForm /> : <FormikForm />}
+      {activeForm === 'controlled' ? <RegistrationForm /> :<FormikForm /> }
       </main>
       
       <footer>
